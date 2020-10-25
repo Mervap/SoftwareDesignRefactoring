@@ -18,11 +18,10 @@ public class Main {
     public static void main(String[] args) throws Exception {
         SQLiteDatabaseManager databaseManager = new SQLiteDatabaseManager("PRODUCT");
         databaseManager.createProductTableIfNotExists();
-        Server server = ServerManager.startServer(8081);
-        ServletContextHandler contextHandler = ServerManager.createContext(server);
-        ServerManager.addServlet(contextHandler, new AddProductServlet(databaseManager), "/add-product");
-        ServerManager.addServlet(contextHandler, new GetProductsServlet(databaseManager),"/get-products");
-        ServerManager.addServlet(contextHandler, new QueryServlet(databaseManager),"/query");
-        server.join();
+        ServerManager serverManager = new ServerManager(8081);
+        serverManager.addServlet(new AddProductServlet(databaseManager), "/add-product");
+        serverManager.addServlet(new GetProductsServlet(databaseManager),"/get-products");
+        serverManager.addServlet(new QueryServlet(databaseManager),"/query");
+        serverManager.getServer().join();
     }
 }

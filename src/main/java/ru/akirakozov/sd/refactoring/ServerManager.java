@@ -10,20 +10,26 @@ import ru.akirakozov.sd.refactoring.servlet.QueryServlet;
 import javax.servlet.Servlet;
 
 public class ServerManager {
-  public static Server startServer(int port) throws Exception {
-    Server server = new Server(port);
+  private final Server server;
+  private final ServletContextHandler servletContext;
+
+  public ServerManager(int port) throws Exception {
+    server = new Server(port);
+    servletContext = new ServletContextHandler(ServletContextHandler.SESSIONS);
+    servletContext.setContextPath("/");
+    server.setHandler(servletContext);
     server.start();
+  }
+
+  public void addServlet(Servlet servlet, String pathSpec) {
+    servletContext.addServlet(new ServletHolder(servlet), pathSpec);
+  }
+
+  public Server getServer() {
     return server;
   }
 
-  public static ServletContextHandler createContext(Server server) {
-    ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-    context.setContextPath("/");
-    server.setHandler(context);
-    return  context;
-  }
-
-  public static void addServlet(ServletContextHandler contextHandler, Servlet servlet, String pathSpec) {
-    contextHandler.addServlet(new ServletHolder(servlet), pathSpec);
+  public ServletContextHandler getServletContextHandler() {
+    return servletContext;
   }
 }
