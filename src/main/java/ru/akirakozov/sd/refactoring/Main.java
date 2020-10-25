@@ -15,9 +15,12 @@ import java.sql.Statement;
  * @author akirakozov
  */
 public class Main {
+    private static final String PRODUCT_TABLE_NAME = "PRODUCT";
+
     public static void main(String[] args) throws Exception {
-        SQLiteDatabaseManager databaseManager = new SQLiteDatabaseManager("PRODUCT");
+        SQLiteDatabaseManager databaseManager = new SQLiteDatabaseManager(PRODUCT_TABLE_NAME);
         databaseManager.createProductTableIfNotExists();
+
         ServerManager serverManager = new ServerManager(8081);
         serverManager.addServlet(new AddProductServlet(databaseManager), "/add-product");
         serverManager.addServlet(new GetProductsServlet(databaseManager),"/get-products");
