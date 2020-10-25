@@ -16,18 +16,13 @@ import java.sql.Statement;
  */
 public class Main {
     public static void main(String[] args) throws Exception {
-        try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
-            String sql = "CREATE TABLE IF NOT EXISTS PRODUCT" +
-                    "(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-                    " NAME           TEXT    NOT NULL, " +
-                    " PRICE          INT     NOT NULL)";
-            Statement stmt = c.createStatement();
-
-            stmt.executeUpdate(sql);
-            stmt.close();
-        }
-
+        SQLiteDatabaseManager databaseManager = new SQLiteDatabaseManager("PRODUCT");
+        databaseManager.createProductTableIfNotExists();
         Server server = ServerManager.startServer(8081);
+        ServletContextHandler contextHandler = ServerManager.createContext(server);
+        ServerManager.addServlet(contextHandler, new AddProductServlet(databaseManager), "/add-product");
+        ServerManager.addServlet(contextHandler, new GetProductsServlet(databaseManager),"/get-products");
+        ServerManager.addServlet(contextHandler, new QueryServlet(databaseManager),"/query");
         server.join();
     }
 }

@@ -1,5 +1,7 @@
 package ru.akirakozov.sd.refactoring.servlet;
 
+import ru.akirakozov.sd.refactoring.SQLiteDatabaseManager;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +14,11 @@ import java.sql.Statement;
 /**
  * @author akirakozov
  */
-public class QueryServlet extends HttpServlet {
+public class QueryServlet extends ProductServlet {
+    public QueryServlet(SQLiteDatabaseManager databaseManager) {
+        super(databaseManager);
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String command = request.getParameter("command");
@@ -21,7 +27,7 @@ public class QueryServlet extends HttpServlet {
             try {
                 try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
                     Statement stmt = c.createStatement();
-                    ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCT ORDER BY PRICE DESC LIMIT 1");
+                    ResultSet rs = stmt.executeQuery("SELECT * FROM " + databaseManager.getTableName() + " ORDER BY PRICE DESC LIMIT 1");
                     response.getWriter().println("<html><body>");
                     response.getWriter().println("<h1>Product with max price: </h1>");
 
@@ -43,7 +49,7 @@ public class QueryServlet extends HttpServlet {
             try {
                 try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
                     Statement stmt = c.createStatement();
-                    ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCT ORDER BY PRICE LIMIT 1");
+                    ResultSet rs = stmt.executeQuery("SELECT * FROM " + databaseManager.getTableName() + " ORDER BY PRICE LIMIT 1");
                     response.getWriter().println("<html><body>");
                     response.getWriter().println("<h1>Product with min price: </h1>");
 
@@ -65,7 +71,7 @@ public class QueryServlet extends HttpServlet {
             try {
                 try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
                     Statement stmt = c.createStatement();
-                    ResultSet rs = stmt.executeQuery("SELECT SUM(price) FROM PRODUCT");
+                    ResultSet rs = stmt.executeQuery("SELECT SUM(price) FROM " + databaseManager.getTableName());
                     response.getWriter().println("<html><body>");
                     response.getWriter().println("Summary price: ");
 
@@ -85,7 +91,7 @@ public class QueryServlet extends HttpServlet {
             try {
                 try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
                     Statement stmt = c.createStatement();
-                    ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM PRODUCT");
+                    ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM " + databaseManager.getTableName());
                     response.getWriter().println("<html><body>");
                     response.getWriter().println("Number of products: ");
 
