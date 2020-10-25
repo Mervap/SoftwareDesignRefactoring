@@ -27,17 +27,7 @@ public class Main {
             stmt.close();
         }
 
-        Server server = new Server(8081);
-
-        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.setContextPath("/");
-        server.setHandler(context);
-
-        context.addServlet(new ServletHolder(new AddProductServlet()), "/add-product");
-        context.addServlet(new ServletHolder(new GetProductsServlet()),"/get-products");
-        context.addServlet(new ServletHolder(new QueryServlet()),"/query");
-
-        server.start();
+        Server server = ServerManager.startServer(8081);
         server.join();
     }
 }
