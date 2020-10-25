@@ -1,21 +1,18 @@
 package ru.akirakozov.sd.refactoring.servlet.query;
 
 import ru.akirakozov.sd.refactoring.HttpBodyResponseBuilder;
-import ru.akirakozov.sd.refactoring.SQLiteDatabaseManager;
-import ru.akirakozov.sd.refactoring.model.Product;
-
-import java.util.List;
+import ru.akirakozov.sd.refactoring.SQLiteProductTableManager;
 
 public class CountQueryCommand extends QueryCommand {
-  public CountQueryCommand(SQLiteDatabaseManager databaseManager) {
-    super(databaseManager);
+  public CountQueryCommand(SQLiteProductTableManager productTableManager) {
+    super(productTableManager);
   }
 
   @Override
   protected String getQueryResponse() {
     HttpBodyResponseBuilder responseBuilder = new HttpBodyResponseBuilder();
     responseBuilder.appendRow("Number of products: ");
-    databaseManager.executeQueryStatement("SELECT COUNT(*) FROM " + databaseManager.getTableName(), resultSet -> {
+    productTableManager.executeQueryStatement("SELECT COUNT(*) FROM " + productTableManager.getTableName(), resultSet -> {
       try {
         if (resultSet.next()) {
           responseBuilder.appendRow(resultSet.getInt(1));

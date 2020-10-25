@@ -1,6 +1,6 @@
 package ru.akirakozov.sd.refactoring.servlet.query;
 
-import ru.akirakozov.sd.refactoring.SQLiteDatabaseManager;
+import ru.akirakozov.sd.refactoring.SQLiteProductTableManager;
 import ru.akirakozov.sd.refactoring.servlet.ProductServlet;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,8 +11,8 @@ import java.io.IOException;
  * @author akirakozov
  */
 public class QueryServlet extends ProductServlet {
-  public QueryServlet(SQLiteDatabaseManager databaseManager) {
-    super(databaseManager);
+  public QueryServlet(SQLiteProductTableManager productTableManager) {
+    super(productTableManager);
   }
 
   @Override
@@ -32,13 +32,13 @@ public class QueryServlet extends ProductServlet {
   public QueryCommand getQueryCommandByName(String queryCommandName) {
     switch (queryCommandName) {
       case "max":
-        return new MaxQueryCommand(databaseManager);
+        return new MaxQueryCommand(productTableManager);
       case "min":
-        return new MinQueryCommand(databaseManager);
+        return new MinQueryCommand(productTableManager);
       case "sum":
-        return new SumQueryCommand(databaseManager);
+        return new SumQueryCommand(productTableManager);
       case "count":
-        return new CountQueryCommand(databaseManager);
+        return new CountQueryCommand(productTableManager);
       default:
         return null;
     }

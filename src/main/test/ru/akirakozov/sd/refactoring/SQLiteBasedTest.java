@@ -28,12 +28,12 @@ public abstract class SQLiteBasedTest {
   protected static final Product PIXEL3 = new Product("Pixel3", 350);
 
   protected final ServerManager serverManager;
-  protected final SQLiteDatabaseManager databaseManager;
+  protected final SQLiteProductTableManager databaseManager;
 
   protected SQLiteBasedTest() {
     try {
       serverManager = new ServerManager(PORT);
-      databaseManager = new SQLiteDatabaseManager(PRODUCT_TABLE_NAME);
+      databaseManager = new SQLiteProductTableManager(PRODUCT_TABLE_NAME);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

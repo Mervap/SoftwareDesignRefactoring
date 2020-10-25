@@ -11,13 +11,13 @@ public class Main {
   private static final String PRODUCT_TABLE_NAME = "PRODUCT";
 
   public static void main(String[] args) throws Exception {
-    SQLiteDatabaseManager databaseManager = new SQLiteDatabaseManager(PRODUCT_TABLE_NAME);
-    databaseManager.createProductTableIfNotExists();
+    SQLiteProductTableManager productTableManager = new SQLiteProductTableManager(PRODUCT_TABLE_NAME);
+    productTableManager.createProductTableIfNotExists();
 
     ServerManager serverManager = new ServerManager(8081);
-    serverManager.addServlet(new AddProductServlet(databaseManager), "/add-product");
-    serverManager.addServlet(new GetProductsServlet(databaseManager), "/get-products");
-    serverManager.addServlet(new QueryServlet(databaseManager), "/query");
+    serverManager.addServlet(new AddProductServlet(productTableManager), "/add-product");
+    serverManager.addServlet(new GetProductsServlet(productTableManager), "/get-products");
+    serverManager.addServlet(new QueryServlet(productTableManager), "/query");
     serverManager.getServer().join();
   }
 }

@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class SQLiteDatabaseManager {
+public class SQLiteProductTableManager {
   private final Connection databaseConnection;
   private final String tableName;
 
-  public SQLiteDatabaseManager(String tableName) throws SQLException {
+  public SQLiteProductTableManager(String tableName) throws SQLException {
     this.databaseConnection = DriverManager.getConnection("jdbc:sqlite:test.db");
     this.tableName = tableName;
   }

@@ -1,16 +1,15 @@
 package ru.akirakozov.sd.refactoring.servlet.query;
 
-import ru.akirakozov.sd.refactoring.HttpBodyResponseBuilder;
-import ru.akirakozov.sd.refactoring.SQLiteDatabaseManager;
+import ru.akirakozov.sd.refactoring.SQLiteProductTableManager;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public abstract class QueryCommand {
-  protected SQLiteDatabaseManager databaseManager;
+  protected SQLiteProductTableManager productTableManager;
 
-  public QueryCommand(SQLiteDatabaseManager databaseManager) {
-    this.databaseManager = databaseManager;
+  public QueryCommand(SQLiteProductTableManager productTableManager) {
+    this.productTableManager = productTableManager;
   }
 
   protected abstract String getQueryResponse();

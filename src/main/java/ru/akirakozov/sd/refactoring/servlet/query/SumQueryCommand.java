@@ -1,18 +1,18 @@
 package ru.akirakozov.sd.refactoring.servlet.query;
 
 import ru.akirakozov.sd.refactoring.HttpBodyResponseBuilder;
-import ru.akirakozov.sd.refactoring.SQLiteDatabaseManager;
+import ru.akirakozov.sd.refactoring.SQLiteProductTableManager;
 
 public class SumQueryCommand extends QueryCommand {
-  public SumQueryCommand(SQLiteDatabaseManager databaseManager) {
-    super(databaseManager);
+  public SumQueryCommand(SQLiteProductTableManager productTableManager) {
+    super(productTableManager);
   }
 
   @Override
   protected String getQueryResponse() {
     HttpBodyResponseBuilder responseBuilder = new HttpBodyResponseBuilder();
     responseBuilder.appendRow("Summary price: ");
-    databaseManager.executeQueryStatement("SELECT SUM(price) FROM " + databaseManager.getTableName(), resultSet -> {
+    productTableManager.executeQueryStatement("SELECT SUM(price) FROM " + productTableManager.getTableName(), resultSet -> {
       try {
         if (resultSet.next()) {
           responseBuilder.appendRow(resultSet.getInt(1));
