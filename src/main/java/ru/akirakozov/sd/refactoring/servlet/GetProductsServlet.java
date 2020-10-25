@@ -1,5 +1,6 @@
 package ru.akirakozov.sd.refactoring.servlet;
 
+import ru.akirakozov.sd.refactoring.HttpBodyResponseBuilder;
 import ru.akirakozov.sd.refactoring.SQLiteDatabaseManager;
 import ru.akirakozov.sd.refactoring.model.Product;
 
@@ -21,12 +22,9 @@ public class GetProductsServlet extends ProductServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     List<Product> allProducts = databaseManager.selectAllProducts();
-    PrintWriter responseWriter = response.getWriter();
-    responseWriter.println("<html><body>");
-    for (Product product : allProducts) {
-      responseWriter.println(product.getName() + "\t" + product.getPrice() + "</br>");
-    }
-    responseWriter.println("</body></html>");
+    HttpBodyResponseBuilder responseBuilder = new HttpBodyResponseBuilder();
+    responseBuilder.appendProductList(allProducts);
+    response.getWriter().print(responseBuilder.toString());
     response.setContentType("text/html");
     response.setStatus(HttpServletResponse.SC_OK);
   }
