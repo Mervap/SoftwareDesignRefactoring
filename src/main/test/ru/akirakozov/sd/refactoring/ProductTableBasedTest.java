@@ -19,7 +19,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 
-public abstract class SQLiteBasedTest {
+public abstract class ProductTableBasedTest {
   protected static final int PORT = 8081;
   protected static final String LOCALHOST = "http://localhost:" + PORT;
   protected static final String PRODUCT_TABLE_NAME = "TestProducts";
@@ -28,28 +28,28 @@ public abstract class SQLiteBasedTest {
   protected static final Product PIXEL3 = new Product("Pixel3", 350);
 
   protected final ServerManager serverManager;
-  protected final SQLiteProductTableManager databaseManager;
+  protected final SQLiteProductTableManager productTableManager;
 
-  protected SQLiteBasedTest() {
+  protected ProductTableBasedTest() {
     try {
       serverManager = new ServerManager(PORT);
-      databaseManager = new SQLiteProductTableManager(PRODUCT_TABLE_NAME);
+      productTableManager = new SQLiteProductTableManager(PRODUCT_TABLE_NAME);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
 
   @BeforeEach
-  protected void setUp() throws Exception {
-    serverManager.addServlet(new AddProductServlet(databaseManager), "/add-product");
-    serverManager.addServlet(new GetProductsServlet(databaseManager), "/get-products");
-    serverManager.addServlet(new QueryServlet(databaseManager), "/query");
-    databaseManager.createProductTableIfNotExists();
+  protected void setUp() {
+    serverManager.addServlet(new AddProductServlet(productTableManager), "/add-product");
+    serverManager.addServlet(new GetProductsServlet(productTableManager), "/get-products");
+    serverManager.addServlet(new QueryServlet(productTableManager), "/query");
+    productTableManager.createProductTableIfNotExists();
   }
 
   @AfterEach
   protected void tearDown() throws Exception {
-    databaseManager.dropProductTable();
+    productTableManager.dropProductTable();
     serverManager.getServer().stop();
   }
 

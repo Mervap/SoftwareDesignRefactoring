@@ -1,7 +1,7 @@
 package ru.akirakozov.sd.refactoring.servlet;
 
 import org.junit.jupiter.api.Test;
-import ru.akirakozov.sd.refactoring.SQLiteBasedTest;
+import ru.akirakozov.sd.refactoring.ProductTableBasedTest;
 import ru.akirakozov.sd.refactoring.model.Product;
 
 import java.util.Arrays;
@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AddGetProductServletTest extends SQLiteBasedTest {
+public class AddGetProductServletTest extends ProductTableBasedTest {
 
   @Test
   public void addGetEmpty() {

@@ -1,14 +1,14 @@
 package ru.akirakozov.sd.refactoring.servlet;
 
 import org.junit.jupiter.api.Test;
-import ru.akirakozov.sd.refactoring.SQLiteBasedTest;
+import ru.akirakozov.sd.refactoring.ProductTableBasedTest;
 import ru.akirakozov.sd.refactoring.model.Product;
 
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class QueryServletTest extends SQLiteBasedTest {
+public class QueryServletTest extends ProductTableBasedTest {
 
   @Test
   public void getEmptyMax() {
@@ -78,10 +78,9 @@ public class QueryServletTest extends SQLiteBasedTest {
     doTest("Number of products: \n" + productsCnt + "\n", "count");
   }
 
-
-  private void doTest(String result, String query) {
+  private void doTest(String bodyText, String query) {
     String expected = "<html><body>\n"
-        + result
+        + bodyText
         + "</body></html>\n";
     assertEquals(expected, readHTMLByPath("query?command=" + query));
   }
