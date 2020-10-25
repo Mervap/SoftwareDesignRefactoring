@@ -21,8 +21,7 @@ public class QueryServlet extends ProductServlet {
     QueryCommand queryCommand = getQueryCommandByName(command);
     if (queryCommand == null) {
       response.getWriter().println("Unknown command: " + command);
-    }
-    else {
+    } else {
       queryCommand.writeResponse(response);
     }
     response.setContentType("text/html");

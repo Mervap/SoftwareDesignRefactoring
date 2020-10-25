@@ -25,8 +25,4 @@ public class ServerManager {
   public Server getServer() {
     return server;
   }
-
-  public ServletContextHandler getServletContextHandler() {
-    return servletContext;
-  }
 }
