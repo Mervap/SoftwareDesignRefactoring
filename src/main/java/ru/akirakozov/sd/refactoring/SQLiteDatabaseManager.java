@@ -15,18 +15,26 @@ public class SQLiteDatabaseManager {
   }
 
   public void createProductTableIfNotExists() throws SQLException {
-    try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
-      String sql = "CREATE TABLE IF NOT EXISTS " + tableName +
-          "(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-          " NAME           TEXT    NOT NULL, " +
-          " PRICE          INT     NOT NULL)";
-      Statement stmt = c.createStatement();
-      stmt.executeUpdate(sql);
-      stmt.close();
-    }
+    executeUpdateStatement(
+        "CREATE TABLE IF NOT EXISTS " + tableName +
+            "(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+            " NAME           TEXT    NOT NULL, " +
+            " PRICE          INT     NOT NULL)");
+  }
+
+  public void dropProductTable() throws SQLException {
+    executeUpdateStatement("DROP TABLE " + tableName);
   }
 
   public String getTableName() {
     return tableName;
+  }
+
+  private void executeUpdateStatement(String query) throws SQLException {
+    try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
+      Statement stmt = c.createStatement();
+      stmt.executeUpdate(query);
+      stmt.close();
+    }
   }
 }
