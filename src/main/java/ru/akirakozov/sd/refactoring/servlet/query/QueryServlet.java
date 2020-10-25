@@ -1,8 +1,9 @@
-package ru.akirakozov.sd.refactoring.servlet;
+package ru.akirakozov.sd.refactoring.servlet.query;
 
 import ru.akirakozov.sd.refactoring.HttpBodyResponseBuilder;
 import ru.akirakozov.sd.refactoring.SQLiteDatabaseManager;
 import ru.akirakozov.sd.refactoring.model.Product;
+import ru.akirakozov.sd.refactoring.servlet.ProductServlet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

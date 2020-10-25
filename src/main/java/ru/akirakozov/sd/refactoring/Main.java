@@ -2,7 +2,7 @@ package ru.akirakozov.sd.refactoring;
 
 import ru.akirakozov.sd.refactoring.servlet.AddProductServlet;
 import ru.akirakozov.sd.refactoring.servlet.GetProductsServlet;
-import ru.akirakozov.sd.refactoring.servlet.QueryServlet;
+import ru.akirakozov.sd.refactoring.servlet.query.QueryServlet;
 
 /**
  * @author akirakozov
