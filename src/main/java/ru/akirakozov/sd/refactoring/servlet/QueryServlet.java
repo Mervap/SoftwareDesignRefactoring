@@ -22,38 +22,44 @@ public class QueryServlet extends ProductServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String command = request.getParameter("command");
     HttpBodyResponseBuilder responseBuilder = new HttpBodyResponseBuilder();
-    if ("max".equals(command)) {
-      List<Product> maxProduct = databaseManager.selectProducts("ORDER BY PRICE DESC LIMIT 1");
-      responseBuilder.appendH1("Product with max price: ");
-      responseBuilder.appendProductList(maxProduct);
-    } else if ("min".equals(command)) {
-      List<Product> minProduct = databaseManager.selectProducts("ORDER BY PRICE LIMIT 1");
-      responseBuilder.appendH1("Product with min price: ");
-      responseBuilder.appendProductList(minProduct);
-    } else if ("sum".equals(command)) {
-      responseBuilder.appendRow("Summary price: ");
-      databaseManager.executeQueryStatement("SELECT SUM(price) FROM " + databaseManager.getTableName(), resultSet -> {
-        try {
-          if (resultSet.next()) {
-            responseBuilder.appendRow(resultSet.getInt(1));
+    switch (command) {
+      case "max":
+        List<Product> maxProduct = databaseManager.selectProducts("ORDER BY PRICE DESC LIMIT 1");
+        responseBuilder.appendH1("Product with max price: ");
+        responseBuilder.appendProductList(maxProduct);
+        break;
+      case "min":
+        List<Product> minProduct = databaseManager.selectProducts("ORDER BY PRICE LIMIT 1");
+        responseBuilder.appendH1("Product with min price: ");
+        responseBuilder.appendProductList(minProduct);
+        break;
+      case "sum":
+        responseBuilder.appendRow("Summary price: ");
+        databaseManager.executeQueryStatement("SELECT SUM(price) FROM " + databaseManager.getTableName(), resultSet -> {
+          try {
+            if (resultSet.next()) {
+              responseBuilder.appendRow(resultSet.getInt(1));
+            }
+          } catch (Exception e) {
+            throw new RuntimeException(e);
           }
-        } catch (Exception e) {
-          throw new RuntimeException(e);
-        }
-      });
-    } else if ("count".equals(command)) {
-      responseBuilder.appendRow("Number of products: ");
-      databaseManager.executeQueryStatement("SELECT COUNT(*) FROM " + databaseManager.getTableName(), resultSet -> {
-        try {
-          if (resultSet.next()) {
-            responseBuilder.appendRow(resultSet.getInt(1));
+        });
+        break;
+      case "count":
+        responseBuilder.appendRow("Number of products: ");
+        databaseManager.executeQueryStatement("SELECT COUNT(*) FROM " + databaseManager.getTableName(), resultSet -> {
+          try {
+            if (resultSet.next()) {
+              responseBuilder.appendRow(resultSet.getInt(1));
+            }
+          } catch (Exception e) {
+            throw new RuntimeException(e);
           }
-        } catch (Exception e) {
-          throw new RuntimeException(e);
-        }
-      });
-    } else {
-      response.getWriter().println("Unknown command: " + command);
+        });
+        break;
+      default:
+        response.getWriter().println("Unknown command: " + command);
+        break;
     }
 
     response.getWriter().print(responseBuilder.toString());
